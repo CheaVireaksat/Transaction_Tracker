@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
                   fontFamily: 'Josefin Sans',
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                   fontSize: 18),
             ),
         appBarTheme: AppBarTheme(
