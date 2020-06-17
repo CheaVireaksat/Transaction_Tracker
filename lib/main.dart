@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
         accentColor: Colors.cyan[600],
+        // errorColor: Colors.red,
         //Define the default font family
         fontFamily: 'Josefin Sans',
         textTheme: ThemeData.light().textTheme.copyWith(
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
                   fontFamily: 'Josefin Sans',
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
+              button: TextStyle(color: Colors.white),
             ),
         appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
@@ -47,18 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // final amountController = TextEditingController();
 
   final List<Transaction> _userTransactions = [
-    // Transaction(
-    //   id: 't1',
-    //   title: 'New Shoes',
-    //   amount: 69.99,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Weekly Groceries',
-    //   amount: 16.53,
-    //   date: DateTime.now(),
-    // ),
+    //code
   ];
 
   List<Transaction> get _recentTransactions {
@@ -71,11 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosenDate) {
     final newTx = Transaction(
       title: txTitle,
       amount: txAmount,
-      date: DateTime.now(),
+      date: chosenDate,
       id: DateTime.now().toString(),
     );
 
@@ -97,6 +89,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 HitTestBehavior.opaque, // to avoid the tap on gestureDetector
           );
         });
+  }
+
+  void _deleteTransaction(String id) {
+    // id as an agument
+    setState(() {
+      _userTransactions.removeWhere((tx) => tx.id == id);
+    });
   }
 
   @override
@@ -124,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Chart(_recentTransactions),
-              TransactionList(_userTransactions),
+              TransactionList(_userTransactions, _deleteTransaction),
             ],
           ),
         ),

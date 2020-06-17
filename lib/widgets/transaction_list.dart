@@ -5,8 +5,9 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final Function deleteTx;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.deleteTx);
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +21,13 @@ class TransactionList extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Container(
-                  height: 250,
-                    child: Image.asset('Assets/Images/undraw_note_list_etto.png',
+                    height: 250,
+                    child: Image.asset(
+                        'Assets/Images/undraw_note_list_etto.png',
                         fit: BoxFit.cover))
               ],
             )
@@ -31,14 +35,28 @@ class TransactionList extends StatelessWidget {
               itemBuilder: (ctx, index) {
                 return Card(
                   elevation: 5,
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5,),
-                                  child: ListTile(
+                  margin: EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 5,
+                  ),
+                  child: ListTile(
                     leading: CircleAvatar(
-                      radius: 30,
-                      child: Padding(padding: EdgeInsets.all(8),child: FittedBox(child: Text('\$${transactions[index].amount}'))),
+                      radius: 35,
+                      child: Padding(
+                          padding: EdgeInsets.all(12),
+                          child: FittedBox(
+                              child: Text('\$${transactions[index].amount}'))),
                     ),
-                    title: Text(transactions[index].title, style: Theme.of(context).textTheme.headline6),
-                    subtitle: Text(DateFormat.yMMMd().format(transactions[index].date)),
+                    title: Text(transactions[index].title,
+                        style: Theme.of(context).textTheme.headline6),
+                    subtitle: Text(
+                        DateFormat.MMMEd().format(transactions[index].date)),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      color: Theme.of(context).errorColor, 
+                      //default errorColor is red
+                      onPressed: () => deleteTx(transactions[index].id),
+                    ),
                   ),
                 );
               },
