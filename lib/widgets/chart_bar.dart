@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class ChartBar extends StatelessWidget {
   final String label;
@@ -8,45 +9,54 @@ class ChartBar extends StatelessWidget {
   ChartBar(this.label, this.spendingAmount, this.spendingPctOfTotal);
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 20,
-          child: FittedBox(
-          child: Text('\$${spendingAmount.toStringAsFixed(0)}'),
-          ),
-        ),
-        SizedBox(
-          height: 4,
-        ),
-        Container(
-          height: 60,
-          width: 10,
-          child: Stack(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 1.0),
-                  color: Colors.teal[50],
-                  // paly arround with rgb color combination
-                  borderRadius: BorderRadius.circular(15),
-                ),
+    // contraints take hight & width (Widget rendered on screen)
+    return LayoutBuilder(
+      builder: (ctx, constraints) {
+        return Column(
+          children: <Widget>[
+            Container(
+              height: constraints.maxHeight * 0.13,
+              child: FittedBox(
+                child: Text('\$${spendingAmount.toStringAsFixed(0)}'),
               ),
-              FractionallySizedBox(
-                heightFactor: spendingPctOfTotal,
-                child: Container(
-                  decoration:
-                      BoxDecoration(color: Theme.of(context).primaryColor),
-                ),
-              )
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 4,
-        ),
-        Text(label),
-      ],
+            ),
+            SizedBox(
+              height: constraints.maxHeight * 0.05,
+            ),
+            Container(
+              height: constraints.maxHeight * 0.6,
+              width: 10,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1.2),
+                      color: Colors.teal[50],
+                      // paly arround with rgb color combination
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  FractionallySizedBox(
+                    heightFactor: spendingPctOfTotal,
+                    child: Container(
+                      decoration:
+                          BoxDecoration(color: Theme.of(context).primaryColor),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: constraints.maxHeight * 0.05,
+            ),
+            Container(
+                height: constraints.maxHeight * 0.13,
+                child: FittedBox(
+                  child: Text(label),
+                )),
+          ],
+        );
+      },
     );
   }
 }
